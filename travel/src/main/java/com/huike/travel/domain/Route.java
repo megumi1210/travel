@@ -2,6 +2,7 @@ package com.huike.travel.domain;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 旅游线路商品实体类
@@ -180,5 +181,54 @@ public class Route implements Serializable {
 
     public void setSid(int sid) {
         this.sid = sid;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Route route = (Route) o;
+        return rid == route.rid &&
+                Double.compare(route.price, price) == 0 &&
+                count == route.count &&
+                cid == route.cid &&
+                sid == route.sid &&
+                Objects.equals(rname, route.rname) &&
+                Objects.equals(routeIntroduce, route.routeIntroduce) &&
+                Objects.equals(rflag, route.rflag) &&
+                Objects.equals(rdate, route.rdate) &&
+                Objects.equals(isThemeTour, route.isThemeTour) &&
+                Objects.equals(rimage, route.rimage) &&
+                Objects.equals(sourceId, route.sourceId) &&
+                Objects.equals(category, route.category) &&
+                Objects.equals(seller, route.seller) &&
+                Objects.equals(routeImgList, route.routeImgList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(rid, rname, price, routeIntroduce, rflag, rdate, isThemeTour, count, cid, rimage, sid, sourceId, category, seller, routeImgList);
+    }
+
+    @Override
+    public String toString() {
+        return "Route{" +
+                "rid=" + rid +
+                ", rname='" + rname + '\'' +
+                ", price=" + price +
+                ", routeIntroduce='" + routeIntroduce + '\'' +
+                ", rflag='" + rflag + '\'' +
+                ", rdate='" + rdate + '\'' +
+                ", isThemeTour='" + isThemeTour + '\'' +
+                ", count=" + count +
+                ", cid=" + cid +
+                ", rimage='" + rimage + '\'' +
+                ", sid=" + sid +
+                ", sourceId='" + sourceId + '\'' +
+                ", category=" + category +
+                ", seller=" + seller +
+                ", routeImgList=" + routeImgList +
+                '}';
     }
 }

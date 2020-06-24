@@ -1,5 +1,5 @@
 <!-- 头部 start -->
-    <header id="header">
+      <header id="header">
         <div class="top_banner">
             <img src="images/top_banner.jpg" alt="">
         </div>
@@ -23,8 +23,8 @@
                     <a href="http://www.huike.com/"><img  src="images/logo.png" alt=""></a>
                 </div>
                 <div class="search">
-                    <input name="" type="text" placeholder="请输入路线名称" class="search_input" autocomplete="off">
-                    <a href="javascript:;" class="search-button">搜索</a>
+                    <input id="search" name="search" type="text" placeholder="请输入路线名称" class="search_input" autocomplete="off">
+                    <a id="search-button" class="search-button">搜索</a>
                 </div>
                 <div class="hottel">
                     <div class="hot_pic">
@@ -54,4 +54,48 @@
             <li><a href="favoriterank.html">收藏排行榜</a></li>
         </ul>
     </div>
-    
+<script>
+    $(document).ready(function () {
+        $('#search-button').onclick=function () {
+            alert("点击了");
+            $.ajax({
+                type:"get",
+                url: "search",
+                data:{
+                    rname:function () {
+                        return $('#search').val();
+                    },
+                    pageNum:1,
+                    pageSize:8
+                },
+                success:function (pageInfo) {
+                    const list = pageInfo.list;
+                    $.each(list,function (i,n) {
+                        let li = "<li>";
+                        li+="<div class=\"img\"><img src=\"" +n.rimage + "\"></div>";
+                        li+="<div class=\"text1\">" +
+                            "<p>"+n.rname+"</p>" +
+                            "<br/>" +
+                            "<p>"+ n.routeIntroduce+"</p>" +
+                            "</div>";
+
+                        li+="<div class=\"price\">" +
+                            " <p class=\"price_num\">" +
+                            " <span>&yen;</span>" +
+                            " <span>"+n.price+"</span>" +
+                            " <span>起</span>" +
+                            " </p>" +
+                            " <p><a href=\"route_detail.html\">查看详情</a></p>" +
+                            "</div>";
+
+                        li+="</li>";
+                        $('#ul').append(li);
+                    })
+
+                }
+
+            })
+        }
+    })
+
+</script>>

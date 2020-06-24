@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/handlebars.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<template id="template">
+    <p>名字: {{name}}</p>
+    <p>年龄: {{age}}</p>
+</template>
+
+<script>
+    $(function() {
+        var data = {
+            name: '前端战五渣',
+            age: 16
+        };
+        var root = $('#root'); // 获取根节点，需要更换内容的标签
+        var htmlNode = $("#template").html(); // 获取标签内容
+        var templateWithoutData = Handlebars.compile(htmlNode); // 生成没有数据的模板
+        var templateWithData = templateWithoutData(data); // 向没有数据的模板传数据
+        root.html(templateWithData); // 把有数据的模板添加到页面
+    })
+</script>
+</body>
+</html>

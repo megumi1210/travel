@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/vue.min.js"></script>
+    <script src="js/vue-router.min.js"></script>
+
+
+    <script>
+        $(function () {
+            //准备数据
+            const person = {"name": "root", "age": 16};
+
+            //通过vue.js 把数据和对应的视图关联起来
+            new Vue({
+                el: '#div1',
+                data: {
+                    person: person
+                }
+            });
+
+
+            var data = [
+                {name: "盖伦", hp: 341},
+                {name: "提莫", hp: 225},
+                {name: "安妮", hp: 427},
+                {name: "死歌", hp: 893}
+            ];
+
+            new Vue({
+                el: '#div2',
+                data: {
+                    heros: data
+                }
+            });
+
+
+            // Vue.component('list',{
+            //     template:' <li>' +
+            //         '<div class="img"><img src="images/04-search_03.jpg" alt=""></div>' +
+            //         '<div class="text1">' +
+            //         '<p>【减100元 含除夕/春节出发】广州增城三英温泉度假酒店/自由行套票</p>\n' +
+            //         '<br/>' +
+            //         '<p>1-2月出发，网付立享￥1099/2人起！爆款位置有限，抢完即止！</p>\n' +
+            //         '</div>\n' +
+            //         ' <div class="price">' +
+            //         '<p class="price_num">' +
+            //         '<span>&yen;</span>' +
+            //         '<span>299</span>' +
+            //         '<span>起</span>' +
+            //         '</p>' +
+            //         '<p><a href="route_detail.html">查看详情</a></p>\n' +
+            //         '</div>' +
+            //         '</li>'
+            // });
+
+            Vue.component('demo', {
+                props: ['item'],
+                template: '<li>{{item.name}}====={{item.hp}}</li>'
+            });
+
+            new Vue({
+                el: '#div3',
+                data: {
+                    items: data
+                }
+            });
+
+
+
+            new Vue({
+                el:'#div4',
+                data:{
+                    list:[]
+                },
+                mounted:function () {
+                    var self = this;
+                    $.ajax({
+                        type:"get",
+                        url: " http://localhost:9090/travel/search",
+                        data:{
+                            rname:$('#search').val(),
+                            pageNum:1,
+                            pageSize:8
+                        },
+                        success:function (pageInfo) {
+                            alert(JSON.stringify(pageInfo));
+                             self.list =pageInfo.list;
+                             alert(self.list)
+
+                        }
+                    })
+                }
+
+            });
+
+
+            function getUrlParams(name){
+                const reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                const r = window.location.search.substr(1).match(reg);
+                if(r!=null)
+                    return unescape(r[2]);
+                return null;
+            }
+
+        })
+
+
+    </script>
+    <style>
+
+        a{
+            text-decoration: none;
+        }
+        a.router-link-active{
+            /*   color:blue; */
+            background-color: lightGray;
+        }
+        div.menu{
+            border:1px solid gray;
+            float:left;
+        }
+        div.menu a{
+            display:block;
+        }
+
+        div.workingRoom{
+            margin-left:100px;
+        }
+
+        div#app{
+            width:500px;
+            padding:10px;
+            margin:10px auto;
+        }
+    </style>
+</head>
+<body>
+<div id="div1">
+
+    {{person.name}}<br>
+    {{person.age}}
+
+</div>
+
+<div id="div2">
+    <table align="center">
+        <tr class="firstLine">
+            <td>name</td>
+            <td>hp</td>
+        </tr>
+
+        <tr v-for="hero in heros">
+            <td>{{hero.name}}</td>
+            <td>{{hero.hp}}</td>
+        </tr>
+
+    </table>
+</div>
+
+<div id="div3">
+    <demo id="list" v-for="item in items" v-bind:item="item"></demo>
+</div>
+
+
+
+<div id="div4">
+    <ul >
+        <li v-for="item in list">
+            <div class="img"><img v-bind:src="item.rimage" alt=""></div>
+            <div class="text1">
+                <p>{{item.rname}}</p>
+                <br/>
+                <p>{{item.routeIntroduce}}</p>
+            </div>
+            <div class="price">
+                <p class="price_num">
+                    <span>&yen;</span>
+                    <span>{{item.price}}</span>
+                    <span>起</span>
+                </p>
+                <p><a href="route_detail.html">查看详情</a></p>
+            </div>
+        </li>
+    </ul>
+
+</div>
+</body>
+</html>
