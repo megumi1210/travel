@@ -55,5 +55,8 @@ public class UserDaoTest {
     @Test
     public void testLogin(){
     System.out.println(userService.login("megumi2","123456"));
+    System.out.println(userService.findUserByUid(21));
     }
+
+
 }

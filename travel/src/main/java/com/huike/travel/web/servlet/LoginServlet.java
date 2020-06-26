@@ -48,8 +48,8 @@ public class LoginServlet extends HttpServlet {
         if (autoLogin != null) { // 记住密码
           cookie1 = new Cookie("username", username);
           cookie2 = new Cookie("password", password);
-          cookie1.setMaxAge(365 * 24 * 60 * 60);
-          cookie2.setMaxAge(365 * 24 * 60 * 60);
+          cookie1.setMaxAge(7 * 24 * 60 * 60);
+          cookie2.setMaxAge(7 * 24 * 60 * 60);
           response.addCookie(cookie1);
           response.addCookie(cookie2);
         } else {

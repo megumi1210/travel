@@ -13,8 +13,81 @@
            .tab-content {
             margin-bottom: 36px;
            }
+
+           a:hover{
+               opacity: 60%;
+           }
+
+           .currentPage{
+               background: #2b669a;
+           }
        </style>
        <script src="js/jquery-3.3.1.js"></script>
+        <script src="js/vue.min.js"></script>
+        <script>
+            $(function () {
+
+                //获取地址栏参数的函数
+                function getUrlParams(name){
+                    const reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                    const r = window.location.search.substr(1).match(reg);
+                    if(r!=null)
+                        return decodeURI(r[2]);
+                    return null;
+                }
+
+               var vue=new Vue({
+                   el:'#content',
+                   data:{
+                       pageInfo:{}
+                   },
+                   mounted:function () {
+                      this.list(1)
+                   },
+                   methods:{
+                       list:function (pageNum) {
+                            $.ajax({
+                                url:"favorite",
+                                type:"get",
+                                data:{
+                                    uid:function () {
+                                        const uid = getUrlParams("uid");
+                                        return encodeURI(uid);
+                                    },
+                                    start:pageNum,
+                                    end:12
+                                },
+                                success:function (pageInfo) {
+                                       if(pageInfo){
+                                           vue.pageInfo =pageInfo;
+                                       }
+                                }
+                            })
+                       },
+                       jumpByPageNum:function (pageNum) {
+                           if(pageNum !== vue.pageInfo.pageNum){
+                               vue.list(pageNum)
+                           }
+                       },
+                       jumpPrePage:function () {
+                           vue.jumpByPageNum(vue.pageInfo.prePage);
+                       },
+                       jumpNextPage:function () {
+                           vue.jumpByPageNum(vue.pageInfo.nextPage);
+                       },
+                       jumpFirst:function () {
+                           vue.jumpByPageNum(1);
+                       },
+                       jumpLast:function () {
+                           vue.jumpByPageNum(vue.pageInfo.pages);
+                       }
+
+                   }
+
+               })
+            })
+
+        </script>
     </head>
     <body>
     <!--引入头部-->
@@ -33,134 +106,27 @@
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="home">
                             <div class="row">
-                                <div class="col-md-3">
-                                    <a href="route_detail.html">
-                                        <img src="images/collection_pic.jpg" alt="">
+                                <div class="col-md-3" v-for="item in pageInfo.list">
+                                    <a :href="'route_detail.html?rid='+item.rid">
+                                        <img :src="item.rimage" alt="">
                                         <div class="has_border">
-                                            <h3>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</h3>
-                                            <div class="price">网付价<em>￥</em><strong>889</strong><em>起</em></div>
+                                            <h3>{{item.rname}}</h3>
+                                            <div class="price">网付价<em>￥</em><strong>{{item.price}}</strong><em>起</em></div>
                                         </div>
                                     </a>
                                 </div>
-                                <div class="col-md-3">
-                                    <a href="route_detail.html">
-                                        <img src="images/collection_pic.jpg" alt="">
-                                        <div class="has_border">
-                                            <h3>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</h3>
-                                            <div class="price">网付价<em>￥</em><strong>889</strong><em>起</em></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-md-3">
-                                    <a href="route_detail.html">
-                                        <img src="images/collection_pic.jpg" alt="">
-                                        <div class="has_border">
-                                            <h3>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</h3>
-                                            <div class="price">网付价<em>￥</em><strong>889</strong><em>起</em></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-md-3">
-                                    <a href="route_detail.html">
-                                        <img src="images/collection_pic.jpg" alt="">
-                                        <div class="has_border">
-                                            <h3>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</h3>
-                                            <div class="price">网付价<em>￥</em><strong>889</strong><em>起</em></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-md-3">
-                                    <a href="route_detail.html">
-                                        <img src="images/collection_pic.jpg" alt="">
-                                        <div class="has_border">
-                                            <h3>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</h3>
-                                            <div class="price">网付价<em>￥</em><strong>889</strong><em>起</em></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-md-3">
-                                    <a href="route_detail.html">
-                                        <img src="images/collection_pic.jpg" alt="">
-                                        <div class="has_border">
-                                            <h3>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</h3>
-                                            <div class="price">网付价<em>￥</em><strong>889</strong><em>起</em></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-md-3">
-                                    <a href="route_detail.html">
-                                        <img src="images/collection_pic.jpg" alt="">
-                                        <div class="has_border">
-                                            <h3>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</h3>
-                                            <div class="price">网付价<em>￥</em><strong>889</strong><em>起</em></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-md-3">
-                                    <a href="route_detail.html">
-                                        <img src="images/collection_pic.jpg" alt="">
-                                        <div class="has_border">
-                                            <h3>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</h3>
-                                            <div class="price">网付价<em>￥</em><strong>889</strong><em>起</em></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                 <div class="col-md-3">
-                                    <a href="route_detail.html">
-                                        <img src="images/collection_pic.jpg" alt="">
-                                        <div class="has_border">
-                                            <h3>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</h3>
-                                            <div class="price">网付价<em>￥</em><strong>889</strong><em>起</em></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-md-3">
-                                    <a href="route_detail.html">
-                                        <img src="images/collection_pic.jpg" alt="">
-                                        <div class="has_border">
-                                            <h3>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</h3>
-                                            <div class="price">网付价<em>￥</em><strong>889</strong><em>起</em></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-md-3">
-                                    <a href="route_detail.html">
-                                        <img src="images/collection_pic.jpg" alt="">
-                                        <div class="has_border">
-                                            <h3>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</h3>
-                                            <div class="price">网付价<em>￥</em><strong>889</strong><em>起</em></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-md-3">
-                                    <a href="jroute_detail.html">
-                                        <img src="images/collection_pic.jpg" alt="">
-                                        <div class="has_border">
-                                            <h3>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</h3>
-                                            <div class="price">网付价<em>￥</em><strong>889</strong><em>起</em></div>
-                                        </div>
-                                    </a>
-                                </div>
+
                             </div>
                         </div>                       
                     </div>
                 </div>
                 <div class="pageNum">
                     <ul>
-                        <li><a href="">首页</a></li>
-                        <li class="threeword"><a href="#">上一页</a></li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li><a href="#">6</a></li>
-                        <li><a href="#">7</a></li>
-                        <li><a href="#">8</a></li>
-                        <li><a href="#">9</a></li>
-                        <li><a href="#">10</a></li>
-                        <li class="threeword"><a href="javascript:;">下一页</a></li>
-                        <li class="threeword"><a href="javascript:;">末页</a></li>
+                        <li @click="jumpFirst()"><a href="#">首页</a></li>
+                        <li class="threeword" v-if="pageInfo.hasPreviousPage"  @click="jumpPrePage()"><a href="#">上一页</a></li>
+                        <li v-for="nav in pageInfo.navigatePageNums" v-bind:class="{currentPage: nav == pageInfo.pageNum}" @click="jumpByPageNum(nav)"><a href="#" >{{nav}}</a></li>
+                        <li class="threeword" v-if="pageInfo.hasNextPage"  @click="jumpNextPage()"><a href="#">下一页</a></li>
+                        <li class="threeword"  @click="jumpLast()"><a href="#">末页</a></li>
                     </ul>
                 </div>
             </section>                      

@@ -7,6 +7,9 @@ import com.huike.travel.domain.User;
  */
 public interface UserDao {
 
+
+    User findUserByUid(int uid);
+
     /**
      * 通过用户名查找用户
      * @param name 用户名

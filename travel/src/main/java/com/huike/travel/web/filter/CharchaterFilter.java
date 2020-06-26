@@ -13,7 +13,7 @@ import java.io.IOException;
 public class CharchaterFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
+    System.out.println("字符编码过滤器初始化...");
     }
 
     @Override

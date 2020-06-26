@@ -4,6 +4,8 @@ import java.util.Objects;
 
 public class PageParam {
 
+
+
     //当前页
     private int PageNum;
 
@@ -12,6 +14,14 @@ public class PageParam {
 
     //数据库查询起始点
     private  int start ;
+
+    //是否开启排序功能
+    private boolean useOrderBy =false;
+
+    //排序的名称
+    private String orderByName = null;
+
+    private Order  order = Order.ASC; //默认升序排列
 
 
 
@@ -52,6 +62,34 @@ public class PageParam {
         return start;
     }
 
+
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+    public boolean isUseOrderBy() {
+        return useOrderBy;
+    }
+
+    public void setUseOrderBy(boolean useOrderBy) {
+        this.useOrderBy = useOrderBy;
+    }
+
+    public String getOrderByName() {
+        return orderByName;
+    }
+
+    public void setOrderByName(String orderByName) {
+        this.orderByName = orderByName;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 
     @Override
     public boolean equals(Object o) {

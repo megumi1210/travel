@@ -31,6 +31,10 @@ public class UserServiceImpl implements UserService {
 
     }
 
+
+
+
+
     @Override
     public boolean validUsername(String username) {
          assert  username != null;
@@ -58,5 +62,15 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
+    }
+
+    @Override
+    public User findUserInfoBy(String username) {
+        return userDao.findByUserName(username);
+    }
+
+    @Override
+    public User findUserByUid(int uid) {
+        return userDao.findUserByUid(uid);
     }
 }

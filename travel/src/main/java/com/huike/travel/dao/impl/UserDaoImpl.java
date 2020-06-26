@@ -11,7 +11,14 @@ public class UserDaoImpl implements UserDao {
 
   private JdbcTemplate jdbcTemplate = new JdbcTemplate(JDBCUtils.getDataSource());
 
-  /**
+    @Override
+    public User findUserByUid(int uid) {
+        String sql = "select * from tab_user where uid=?";
+        List<User> users =query(sql,new Object[]{uid});
+        return  users.size() == 1 ? users.get(0): null  ;
+    }
+
+    /**
    * 该方法用于通过用户名查找数据库表user中的数据
    *
    * @param name 用户名
@@ -22,24 +29,7 @@ public class UserDaoImpl implements UserDao {
 
     // TODO 此处写JDBCTemplate操纵数据库的代码
     String sql = "select * from tab_user where username = ?";
-    List<User> users =
-        jdbcTemplate.query(
-            sql,
-            new Object[] {name},
-                (rs, i) -> {
-                  User user = new User();
-                  user.setUid(rs.getInt("uid"));
-                  user.setUsername(rs.getString("username"));
-                  user.setPassword(rs.getString("password"));
-                  user.setName(rs.getString("name"));
-                  user.setBirthday(rs.getString("birthday"));
-                  user.setSex(rs.getString("sex"));
-                  user.setCode(rs.getString("code"));
-                  user.setEmail(rs.getString("email"));
-                  user.setTelephone(rs.getString("telephone"));
-                  user.setStatus(rs.getString("status"));
-                  return user;
-                });
+      List<User> users = query(sql,new Object[]{name});
 
        return  users.size() == 1 ? users.get(0): null  ;
   }
@@ -75,5 +65,26 @@ public class UserDaoImpl implements UserDao {
       e.printStackTrace();
       return false;
     }
+  }
+
+
+  private List<User> query(String sql,Object[] args){
+      return jdbcTemplate.query(
+              sql,
+              args,
+              (rs, i) -> {
+                  User user = new User();
+                  user.setUid(rs.getInt("uid"));
+                  user.setUsername(rs.getString("username"));
+                  user.setPassword(rs.getString("password"));
+                  user.setName(rs.getString("name"));
+                  user.setBirthday(rs.getString("birthday"));
+                  user.setSex(rs.getString("sex"));
+                  user.setCode(rs.getString("code"));
+                  user.setEmail(rs.getString("email"));
+                  user.setTelephone(rs.getString("telephone"));
+                  user.setStatus(rs.getString("status"));
+                  return user;
+              });
   }
 }

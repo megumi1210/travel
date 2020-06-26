@@ -34,10 +34,32 @@
 
             const  rname =getUrlParams("rname");
 
-            $('#search').val(rname);
+            $('#search').val(rname);//无效
+
+            var  vue2 = new Vue({
+                el:'#right',
+                data:{
+                    pageInfo:{}
+                },
+                mounted:function () {
+
+                    $.ajax({
+                        type: "get",
+                        url: " search",
+                        data: {
+                            pageNum: 1,
+                            pageSize: 5
+                        },
+                        success: function (pageInfo) {
+                            vue2.pageInfo =pageInfo;
+                        }
+                    })
+
+                }
+            });
 
             var vue = new Vue({
-                el: '#list',
+                el: '#left',
                 data: {
                     pageInfo:{}
                 },
@@ -48,7 +70,7 @@
                     list: function (pageNum) {
                         $.ajax({
                             type: "get",
-                            url: " http://localhost:9090/travel/search",
+                            url: " search",
                             data: {
                                 rname:function () {
                                     var rname = getUrlParams("rname");
@@ -102,8 +124,8 @@
                 <img src="images/search.png" alt="">
                 <p>旅行><span>搜索结果</span></p>
             </div>
-            <div id="list" class="xinxi clearfix">
-                <div class="left">
+            <div  class="xinxi clearfix">
+                <div class="left" id="left">
                     <div class="header">
                         <span>商品信息</span>
                         <span class="jg">价格</span>
@@ -122,7 +144,7 @@
                                     <span>{{item.price}}</span>
                                     <span>起</span>
                                 </p>
-                                <p><a href="route_detail.html">查看详情</a></p>
+                                <p><a v-bind:href="'route_detail.html?rid='+item.rid">查看详情</a></p>
                             </div>
                         </li>
                     </ul>
@@ -132,7 +154,7 @@
                     </div>
                     <div class="pageNum">
                         <ul>
-                            <li><a href="#" @click="jumpFirst()">首页</a></li>
+                            <li @click="jumpFirst()"><a href="#" >首页</a></li>
                             <li class="threeword" v-if="pageInfo.hasPreviousPage"  @click="jumpPrePage()"><a href="#" >上一页</a></li>
                             <li v-for="nav in pageInfo.navigatePageNums" v-bind:class="{currentPage: nav == pageInfo.pageNum}" @click="jumpByPageNum(nav)"><a href="#" >{{nav}}</a></li>
                             <li class="threeword" v-if="pageInfo.hasNextPage"  @click="jumpNextPage()"><a href="#">下一页</a></li>
@@ -140,52 +162,23 @@
                         </ul>
                     </div>
                 </div>
-                <div class="right">
+
+
+                <div class="right" id="right">
                     <div class="top">
                         <div class="hot">HOT</div>
                         <span>热门推荐</span>
                     </div>
                     <ul>
-                        <li>
-                            <div class="left"><img src="images/04-search_09.jpg" alt=""></div>
+                        <li v-for="item ,index in pageInfo.list">
+                            <div class="left"><img :src="item.rimage" alt=""></div>
                             <div class="right">
-                                <p>清远新银盏温泉度假村酒店/自由行套...</p>
-                                <p>网付价<span>&yen;<span>899</span>起</span>
+                                <p>{{item.routeIntroduce}}</p>
+                                <p>网付价<span>&yen;<span>{{item.price}}</span>起</span>
                                 </p>
                             </div>
                         </li>
-                        <li>
-                            <div class="left"><img src="images/04-search_09.jpg" alt=""></div>
-                            <div class="right">
-                                <p>清远新银盏温泉度假村酒店/自由行套...</p>
-                                <p>网付价<span>&yen;<span>899</span>起</span>
-                                </p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="left"><img src="images/04-search_09.jpg" alt=""></div>
-                            <div class="right">
-                                <p>清远新银盏温泉度假村酒店/自由行套...</p>
-                                <p>网付价<span>&yen;<span>899</span>起</span>
-                                </p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="left"><img src="images/04-search_09.jpg" alt=""></div>
-                            <div class="right">
-                                <p>清远新银盏温泉度假村酒店/自由行套...</p>
-                                <p>网付价<span>&yen;<span>899</span>起</span>
-                                </p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="left"><img src="images/04-search_09.jpg" alt=""></div>
-                            <div class="right">
-                                <p>清远新银盏温泉度假村酒店/自由行套...</p>
-                                <p>网付价<span>&yen;<span>899</span>起</span>
-                                </p>
-                            </div>
-                        </li>
+
                     </ul>
                 </div>
             </div>

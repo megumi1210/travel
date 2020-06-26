@@ -92,12 +92,22 @@ public class RouteDaoImpl implements RouteDao {
     }
   }
 
+  @Override
+  public int updateCount(int count ,int rid) {
+    String sql ="update tab_route set count =? where rid =?";
+    return  jdbcTemplate.update(sql,count,rid);
+  }
+
   // 多查询sql 生成工厂
   public String sqlFactory(Route route, PriceParam priceParam, PageParam pageParam) {
     StringBuilder sql = new StringBuilder("select * from tab_route where 1 =1 ");
     if (route != null) {
       if (route.getCid() != 0) { // 通过分类id查找
         sql.append(" and cid = ").append(route.getCid()).append(" ");
+      }
+
+      if (route.getRid() != 0) { // 通过rid查找
+        sql.append(" and rid = ").append(route.getRid()).append(" ");
       }
 
       if (route.getRname() != null) { // 根据名称模糊查找
@@ -115,10 +125,19 @@ public class RouteDaoImpl implements RouteDao {
       }
     }
     if (pageParam != null) {
+      if(pageParam.isUseOrderBy()){//开启排序功能
+        String  orderByName = pageParam.getOrderByName();
+         if(orderByName != null && !orderByName.equals("")){ //存在排序的属性
+            sql.append(" order by ").append(pageParam.getOrderByName()).append(" ")
+                    .append(pageParam.getOrder().getName());
+         }
+      }
+
       sql.append(" limit ")
           .append(pageParam.getStart())
           .append(", ")
           .append(pageParam.getPageSize());
+
     }
     return sql.toString();
   }

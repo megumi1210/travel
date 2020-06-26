@@ -16,7 +16,7 @@ public class PriceParam {
     public PriceParam(double start, double end) {
         this.start = start > 0 ? start : 0;
         this.end = end > 0 ? end: 0;
-        reset();
+
     }
 
 
@@ -26,7 +26,6 @@ public class PriceParam {
 
     public void setStart(double start) {
         this.start = start > 0 ? start : 0;
-        reset();
     }
 
     public double getEnd() {
@@ -35,17 +34,11 @@ public class PriceParam {
 
     public void setEnd(double end) {
         this.end = end >0? end : 0;
-        reset();
+
     }
 
 
-    private  void reset(){
-        if(this.end < this.start){
-            double tmp = start;
-            start = end;
-            end = tmp;
-        }
-    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -59,5 +52,13 @@ public class PriceParam {
     @Override
     public int hashCode() {
         return Objects.hash(start, end);
+    }
+
+    @Override
+    public String toString() {
+        return "PriceParam{" +
+                "start=" + start +
+                ", end=" + end +
+                '}';
     }
 }

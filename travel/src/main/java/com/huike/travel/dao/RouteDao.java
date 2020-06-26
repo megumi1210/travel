@@ -10,4 +10,5 @@ public interface RouteDao {
 
     List<Route>  findRoutesByPage(Route route , PriceParam priceParam, PageParam pageParam);
     int  getTotal(Route route ,PriceParam priceParam ,PageParam pageParam);
+    int  updateCount(int count ,int rid);
 }

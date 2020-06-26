@@ -18,4 +18,8 @@ public interface UserService {
 
     boolean login(String username,String password);
 
+     User findUserInfoBy(String username);
+
+     User findUserByUid(int uid);
+
 }

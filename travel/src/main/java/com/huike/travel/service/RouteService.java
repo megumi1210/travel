@@ -7,5 +7,9 @@ import com.huike.travel.domain.Route;
 
 public interface RouteService {
 
+    Route  findRouteByRid(int rid);
+
     PageInfo<Route>  findRoutByPage(Route route , PriceParam priceParam , PageParam pageParam);
+
+    boolean   updateCount(int count ,int rid);
 }

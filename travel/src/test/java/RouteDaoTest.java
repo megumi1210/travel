@@ -1,5 +1,6 @@
 import com.huike.travel.dao.RouteDao;
 import com.huike.travel.dao.impl.RouteDaoImpl;
+import com.huike.travel.domain.Order;
 import com.huike.travel.domain.PageParam;
 import com.huike.travel.domain.PriceParam;
 import com.huike.travel.domain.Route;
@@ -43,5 +44,22 @@ public class RouteDaoTest {
     System.out.println(routeService.findRoutByPage(null,priceParam,null));
 
     System.err.println(routeService.findRoutByPage(null,null,new PageParam(5,6)));
+  }
+
+  @Test
+  public void testOrderBy(){
+    PageParam pageParam = new PageParam();
+    pageParam.setUseOrderBy(true);
+    pageParam.setOrderByName("count");
+    pageParam.setOrder(Order.DESC);
+    System.out.println(routeDao.findRoutesByPage(null,null,pageParam));
+  }
+
+  @Test
+  public void testUpdate(){
+    System.out.println(routeDao.updateCount(1,1));
+    System.out.println(routeDao.updateCount(-1,-1));
+    System.out.println(routeDao.updateCount(2,1));
+    System.out.println(routeService.updateCount(1,-1));
   }
 }
