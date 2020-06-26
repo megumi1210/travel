@@ -1,6 +1,7 @@
 com\huike\travel\web\servlet\UserInfoServlet.class
 com\huike\travel\web\filter\LoginFilter.class
 com\huike\travel\web\servlet\FavoriteServlet.class
+com\huike\travel\web\servlet\LoginOutServlet.class
 com\huike\travel\domain\UserInfo.class
 com\huike\travel\service\impl\RouteImgServiceImpl.class
 com\huike\travel\web\servlet\RouteDetailServlet.class
