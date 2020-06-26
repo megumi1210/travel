@@ -22,4 +22,6 @@ public interface UserService {
 
      User findUserByUid(int uid);
 
+     boolean activeUser(int uid , String code);
+
 }

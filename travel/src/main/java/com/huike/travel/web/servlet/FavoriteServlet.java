@@ -3,9 +3,11 @@ package com.huike.travel.web.servlet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huike.travel.domain.PageInfo;
 import com.huike.travel.domain.PageParam;
+import com.huike.travel.domain.RestfulResponse;
 import com.huike.travel.domain.Route;
 import com.huike.travel.service.FavoriteService;
 import com.huike.travel.service.impl.FavoriteServiceImpl;
+import com.huike.travel.util.WebUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,13 +27,11 @@ public class FavoriteServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-          response.setContentType("application/json;charset=utf-8");
-          PrintWriter out =  response.getWriter();
-          ObjectMapper mapper = new ObjectMapper();
+        RestfulResponse restfulResponse = WebUtils.getRestfulResponse(response);
 
           String uid = request.getParameter("uid");
-          String pageNum = request.getParameter("pageNum");
-          String pageSize = request.getParameter("pageSize");
+          String pageNum = request.getParameter("start");
+          String pageSize = request.getParameter("end");
 
          PageInfo<Route> result = null;
           if( uid != null){
@@ -44,6 +44,8 @@ public class FavoriteServlet extends HttpServlet {
                   pageParam.setPageSize(Integer.parseInt(pageSize));
               }
 
+
+
               try{
                    int  id = Integer.parseInt(uid);
                    result = favoriteService.findFavoriteRoutesByPage(id,pageParam);
@@ -52,10 +54,7 @@ public class FavoriteServlet extends HttpServlet {
                  e.printStackTrace();
               }
           }
-
-          out.write(mapper.writeValueAsString(result));
-          System.out.println(mapper.writeValueAsString(result));
-          out.flush();
-          out.close();
+          System.out.println(result);
+          restfulResponse.writeOnce(result);
     }
 }

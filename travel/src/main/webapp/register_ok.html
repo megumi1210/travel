@@ -7,6 +7,31 @@
         <link rel="stylesheet" href="css/register.css">
 		<!--导入jquery-->
 		<script src="js/jquery-3.3.1.js"></script>
+        <script>
+
+            $(function () {
+
+                //获取地址栏参数的函数
+                function getUrlParams(name){
+                    const reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                    const r = window.location.search.substr(1).match(reg);
+                    if(r!=null)
+                        return decodeURI(r[2]);
+                    return null;
+                }
+
+                $.ajax({
+                    url:"active?username="+encodeURI(getUrlParams("username")),
+                    type:"post",
+                    success(message){
+                        alert(message);
+                    }
+
+                })
+
+            })
+
+        </script>
     </head>
     <body>
     <!--引入头部-->

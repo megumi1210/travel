@@ -66,8 +66,6 @@ public class LoginFilter implements Filter {
     }
 
     if (username != null && password != null) {
-      System.out.println(username);
-      System.out.println(password);
       if (userService.login(username, password)) { // 如果验证登录成功放行
         //将查询到的信息传递
         User user = userService.findUserInfoBy(username);

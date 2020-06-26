@@ -2,6 +2,7 @@ import com.huike.travel.dao.UserDao;
 import com.huike.travel.dao.impl.UserDaoImpl;
 import com.huike.travel.domain.User;
 import com.huike.travel.service.impl.UserServiceImpl;
+import com.huike.travel.util.UuidUtil;
 import org.junit.Test;
 
 public class UserDaoTest {
@@ -56,6 +57,25 @@ public class UserDaoTest {
     public void testLogin(){
     System.out.println(userService.login("megumi2","123456"));
     System.out.println(userService.findUserByUid(21));
+
+    System.out.println(userService.findUserInfoBy("2984905969@qq.com").getEmail());
+    }
+
+
+    @Test
+    public void testUpdate(){
+        User user = new User();
+        user.setUid(35);
+        user.setName("陈科杰");
+        user.setSex("女");
+        int result = userDao.updateUser(user);
+        System.out.println(result);
+
+        User root = new User();
+        root.setUid(21);
+        root.setStatus("Y");
+        root.setCode(UuidUtil.getUuid());
+    System.out.println(userDao.updateUser(root));
     }
 
 

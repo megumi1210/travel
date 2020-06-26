@@ -25,4 +25,7 @@ public interface UserDao {
      */
     boolean save(User user);
 
+
+    int updateUser(User user);
+
 }

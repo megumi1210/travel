@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huike.travel.domain.*;
 import com.huike.travel.service.RouteService;
 import com.huike.travel.service.impl.RouteServiceImpl;
+import com.huike.travel.util.WebUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,10 +32,7 @@ public class RouteServlet extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    request.setCharacterEncoding("UTF-8");
-    response.setContentType("application/json;charset=utf-8");
-    ObjectMapper mapper = new ObjectMapper();
-    PrintWriter out = response.getWriter();
+    RestfulResponse restfulResponse = WebUtils.getRestfulResponse(response);
 
     String cid =request.getParameter("cid");
     String rname = request.getParameter("rname");
@@ -43,11 +41,6 @@ public class RouteServlet extends HttpServlet {
     String start = request.getParameter("start");
     String end = request.getParameter("end");
 
-    System.out.println("rname --->"+rname);
-    System.out.println("pageNum --->"+pageNum);
-    System.out.println("pageSize --->"+pageSize);
-    System.out.println("start --->"+start);
-    System.out.println("end --->" +end);
 
     Route route = new Route();
     if(rname != null){
@@ -68,7 +61,7 @@ public class RouteServlet extends HttpServlet {
     if (end != null && validNum(end)) {
       priceParam.setEnd(Double.parseDouble(end));
     }
-    System.out.println(priceParam);
+
     PageParam pageParam = new PageParam();
     if(pageNum !=null){
       pageParam.setPageNum(Integer.parseInt(pageNum));
@@ -80,12 +73,9 @@ public class RouteServlet extends HttpServlet {
     pageParam.setOrderByName("count");
     pageParam.setOrder(Order.DESC);
     PageInfo<Route> pageInfo = routeService.findRoutByPage(route, priceParam, pageParam);
-    System.out.println(pageInfo);
-    System.err.println(pageInfo.getList());
 
-    out.write(mapper.writeValueAsString(pageInfo));
-    out.flush();
-    out.close();
+
+       restfulResponse.writeOnce(pageInfo);
   }
 
   protected void doGet(HttpServletRequest request, HttpServletResponse response)

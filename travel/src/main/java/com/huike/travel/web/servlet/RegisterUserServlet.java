@@ -49,9 +49,10 @@ public class RegisterUserServlet extends HttpServlet {
           if (name.equals("sex")) {
               value = value.equals("male")? "男" :"女";
           }
-          System.out.println("name:" + name + " ->   " + "value:" + value);
+
           BeanUtils.setProperty(user, name, value);
         }
+        user.setStatus("N");
 
         msg = userService.registerUser(user) ? "true" :"注册失败";
         out.write(mapper.writeValueAsString(msg));

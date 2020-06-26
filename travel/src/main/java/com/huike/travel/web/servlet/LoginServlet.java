@@ -2,8 +2,10 @@ package com.huike.travel.web.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huike.travel.domain.LoginMessage;
+import com.huike.travel.domain.RestfulResponse;
 import com.huike.travel.service.UserService;
 import com.huike.travel.service.impl.UserServiceImpl;
+import com.huike.travel.util.WebUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,10 +21,7 @@ public class LoginServlet extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    response.setContentType("application/json;charset=utf-8");
-    response.setCharacterEncoding("UTF-8");
-    PrintWriter out = response.getWriter();
-    ObjectMapper mapper = new ObjectMapper();
+    RestfulResponse restfulResponse = WebUtils.getRestfulResponse(response);
     LoginMessage msg;
 
     String check = request.getParameter("check");
@@ -60,18 +59,16 @@ public class LoginServlet extends HttpServlet {
           response.addCookie(cookie1);
           response.addCookie(cookie2);
         }
-          HttpSession session = request.getSession();
-          session.setAttribute("username",username);
-          session.setAttribute("password",username);
+//          HttpSession session = request.getSession();
+//          session.setAttribute("username",username);
+//          session.setAttribute("password",username);
 
       }
     } else {
       msg = new LoginMessage("验证码错误", Boolean.FALSE);
     }
 
-    out.write(mapper.writeValueAsString(msg));
-    out.flush();
-    out.close();
+     restfulResponse.writeOnce(msg);
   }
 
   protected void doGet(HttpServletRequest request, HttpServletResponse response)

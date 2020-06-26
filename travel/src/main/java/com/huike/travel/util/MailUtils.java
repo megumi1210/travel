@@ -4,14 +4,16 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 发邮件工具类
  */
 public final class MailUtils {
-    private static final String USER = ""; // 发件人称号，同邮箱地址
-    private static final String PASSWORD = ""; // 如果是qq邮箱可以使户端授权码，或者登录密码
-
+    private static final String USER = "2984905969@qq.com"; // 发件人称号，同邮箱地址
+    private static final String PASSWORD = "hlhkeghdburgdgfa"; // 如果是qq邮箱可以使户端授权码，或者登录密码
+    //
     /**
      *
      * @param to 收件人邮箱
@@ -68,10 +70,18 @@ public final class MailUtils {
     }
 
     public static void main(String[] args) throws Exception { // 做测试用
-        MailUtils.sendMail("itcast_xian@163.com","你好，这是一封测试邮件，无需回复。","测试邮件");
-        System.out.println("发送成功");
+        //MailUtils.sendMail("chenjinguo1210@gmail.com","你好，这是一封测试邮件，无需回复。","测试邮件");
+        //System.out.println("发送成功");
+
+        String code = UuidUtil.getUuid();
+        String url = "http://localhost:8080/travel/updateUser?code="+code;
+        String text = "前往激活<a href=\""+url+ "\">"+ url +"</a>";
+        String finalEmail = "chenjinguo1210@gmail.com";
+        threadPool.submit(()->{
+            MailUtils.sendMail(finalEmail,text,"激活账号");
+        });
     }
 
 
-
+   public static ExecutorService threadPool = Executors.newCachedThreadPool();
 }

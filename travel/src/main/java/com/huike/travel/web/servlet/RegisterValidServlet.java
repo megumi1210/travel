@@ -1,8 +1,10 @@
 package com.huike.travel.web.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.huike.travel.domain.RestfulResponse;
 import com.huike.travel.service.UserService;
 import com.huike.travel.service.impl.UserServiceImpl;
+import com.huike.travel.util.WebUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,21 +20,16 @@ public class RegisterValidServlet extends HttpServlet {
     private UserService userService = new UserServiceImpl();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
+
         String username = request.getParameter("username");
-        response.setContentType("application/json;charset=utf-8");
-        response.setCharacterEncoding("UTF-8");
-        ObjectMapper mapper = new ObjectMapper();
-        PrintWriter out = response.getWriter();
+        RestfulResponse restfulResponse = WebUtils.getRestfulResponse(response);
+
         if(username == null){
-            out.write(mapper.writeValueAsString(Boolean.TRUE));
+             restfulResponse.writeOnce(Boolean.TRUE);
         }else {
             Boolean msg = userService.validUsername(username);
-            out.write(mapper.writeValueAsString(msg));
+             restfulResponse.writeOnce(msg);
         }
-        out.flush();
-        out.close();
-
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

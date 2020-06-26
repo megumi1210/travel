@@ -30,8 +30,8 @@
                                  $('#checkCode').prop("src", "checkCode?" + new Date().getTime());
 
                              } else {
-                                 alert("注册成功");
-                                 window.location.href = " http://localhost:9090/travel";
+                                 alert("注册成功,请查看邮箱激活账号");
+                                 window.location.href = "register_ok.html?username="+$('#username').val();
                              }
                          }
                      })

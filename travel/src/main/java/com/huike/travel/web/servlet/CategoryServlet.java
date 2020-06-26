@@ -2,8 +2,10 @@ package com.huike.travel.web.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huike.travel.domain.Category;
+import com.huike.travel.domain.RestfulResponse;
 import com.huike.travel.service.CategoryService;
 import com.huike.travel.service.impl.CategoryServiceImpl;
+import com.huike.travel.util.WebUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,15 +28,9 @@ public class CategoryServlet extends HttpServlet {
 
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    PrintWriter out = response.getWriter();
-    response.setContentType("application/json;charset=utf-8");
-    ObjectMapper mapper = new ObjectMapper();
 
+    RestfulResponse restfulResponse = WebUtils.getRestfulResponse(response);
     List<Category> resultSet = categoryService.findAll();
-
-    out.write(mapper.writeValueAsString(resultSet));
-    System.out.println(mapper.writeValueAsString(resultSet));
-    out.flush();
-    out.close();
+    restfulResponse.writeOnce(resultSet);
   }
 }

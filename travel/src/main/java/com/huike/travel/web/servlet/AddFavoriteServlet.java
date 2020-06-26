@@ -1,16 +1,14 @@
 package com.huike.travel.web.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.huike.travel.domain.ResultInfo;
-import com.huike.travel.domain.Route;
-import com.huike.travel.domain.User;
-import com.huike.travel.domain.UserInfo;
+import com.huike.travel.domain.*;
 import com.huike.travel.service.FavoriteService;
 import com.huike.travel.service.RouteService;
 import com.huike.travel.service.UserService;
 import com.huike.travel.service.impl.FavoriteServiceImpl;
 import com.huike.travel.service.impl.RouteServiceImpl;
 import com.huike.travel.service.impl.UserServiceImpl;
+import com.huike.travel.util.WebUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,9 +28,7 @@ public class AddFavoriteServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        response.setContentType("application/json;charset=utf-8");
-        PrintWriter out = response.getWriter();
-        ObjectMapper mapper = new ObjectMapper();
+        RestfulResponse restfulResponse = WebUtils.getRestfulResponse(response);
         int uid =-1;
 
         String rid =request.getParameter("rid");
@@ -65,11 +61,7 @@ public class AddFavoriteServlet extends HttpServlet {
             }
 
             //未登录 null 一直显示添加收藏
-            out.write(mapper.writeValueAsString(resultInfo));
-            System.out.println(mapper.writeValueAsString(resultInfo));
-            out.flush();
-            out.close();
-
+            restfulResponse.writeOnce(resultInfo);
 
         }
 

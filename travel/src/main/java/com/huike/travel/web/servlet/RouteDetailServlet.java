@@ -2,6 +2,7 @@ package com.huike.travel.web.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.huike.travel.domain.RestfulResponse;
 import com.huike.travel.domain.RouteDetailResult;
 import com.huike.travel.domain.User;
 import com.huike.travel.domain.UserInfo;
@@ -11,6 +12,7 @@ import com.huike.travel.service.UserService;
 import com.huike.travel.service.impl.FavoriteServiceImpl;
 import com.huike.travel.service.impl.RouteDetailServiceImpl;
 import com.huike.travel.service.impl.UserServiceImpl;
+import com.huike.travel.util.WebUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +21,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
+
 
 @WebServlet("/RouteDetail")
 public class RouteDetailServlet extends HttpServlet {
@@ -35,25 +37,22 @@ public class RouteDetailServlet extends HttpServlet {
 
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    String pathVariable = request.getQueryString();
-    assert pathVariable != null;
 
-    PrintWriter out = response.getWriter();
-    response.setContentType("application/json;charset=utf-8");
-    ObjectMapper mapper = new ObjectMapper();
+    String path = request.getQueryString();
+
+
+    RestfulResponse restfulResponse = WebUtils.getRestfulResponse(response);
     int uid = -1;
+    int rid = -1;
     String username = null;
     String password = null;
     RouteDetailResult result = null;
-    int rid = -1;
-    int start = pathVariable.indexOf("rid");
-    if (start != -1) {
-      int end = pathVariable.indexOf("&", start);
-      try {
-        rid = end == -1 ? Integer.parseInt(pathVariable.substring(start + 4)) : -1;
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
+
+    try {
+      String value = WebUtils.getPathVariable(path, "rid");
+      rid = Integer.parseInt(value);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
 
     Cookie[] cookies = request.getCookies();
@@ -77,21 +76,16 @@ public class RouteDetailServlet extends HttpServlet {
       }
     }
 
+
     if (rid == -1) {
-      out.write(mapper.writeValueAsString(null));
+      restfulResponse.writeOnce(null);
     } else {
       result = routeDetailService.findDetailByRid(rid);
-      if (uid !=-1) { // 如果用户登录过,查询是否被收藏
+      if (uid != -1) { // 如果用户登录过,查询是否被收藏
         boolean star = favoriteService.alreadyStared(rid, uid);
-        System.out.println("isStared -->" + star);
         result.setStar(star);
       }
-      out.write(mapper.writeValueAsString(result));
+      restfulResponse.writeOnce(result);
     }
-
-    System.out.println(rid);
-    System.out.println(mapper.writeValueAsString(routeDetailService.findDetailByRid(rid)));
-    out.flush();
-    out.close();
   }
 }

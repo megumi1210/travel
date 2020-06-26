@@ -73,4 +73,13 @@ public class UserServiceImpl implements UserService {
     public User findUserByUid(int uid) {
         return userDao.findUserByUid(uid);
     }
+
+    @Override
+    public boolean activeUser(int uid, String code) {
+        User user  = new User();
+        user.setStatus("Y");
+        user.setCode(code);
+        user.setUid(uid);
+        return  userDao.updateUser(user) == 1;
+    }
 }

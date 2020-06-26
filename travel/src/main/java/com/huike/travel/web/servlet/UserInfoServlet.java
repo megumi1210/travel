@@ -1,10 +1,12 @@
 package com.huike.travel.web.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.huike.travel.domain.RestfulResponse;
 import com.huike.travel.domain.User;
 import com.huike.travel.domain.UserInfo;
 import com.huike.travel.service.UserService;
 import com.huike.travel.service.impl.UserServiceImpl;
+import com.huike.travel.util.WebUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,9 +30,8 @@ public class UserInfoServlet extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    response.setContentType("application/json;charset=utf-8");
-    PrintWriter out = response.getWriter();
-    ObjectMapper mapper = new ObjectMapper();
+    RestfulResponse restfulResponse = WebUtils.getRestfulResponse(response);
+
 
     Cookie[] cookie = request.getCookies();
     String username = null;
@@ -56,9 +57,6 @@ public class UserInfoServlet extends HttpServlet {
       userInfo = new UserInfo(username, user.getUid());
     }
 
-    out.write(mapper.writeValueAsString(userInfo));
-    System.out.println(mapper.writeValueAsString(userInfo));
-    out.flush();
-    out.close();
+     restfulResponse.writeOnce(userInfo);
   }
 }

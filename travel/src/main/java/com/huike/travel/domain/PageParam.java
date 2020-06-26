@@ -105,4 +105,13 @@ public class PageParam {
     public int hashCode() {
         return Objects.hash(PageNum, pageSize, start);
     }
+
+    @Override
+    public String toString() {
+        return "PageParam{" +
+                "PageNum=" + PageNum +
+                ", pageSize=" + pageSize +
+                ", start=" + start +
+                '}';
+    }
 }
