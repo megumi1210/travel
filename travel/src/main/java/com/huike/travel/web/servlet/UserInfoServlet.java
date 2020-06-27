@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+//实现自动登录
 @WebServlet("/userInfo")
 public class UserInfoServlet extends HttpServlet {
 
@@ -34,11 +35,38 @@ public class UserInfoServlet extends HttpServlet {
 
 
     UserInfo userInfo = (UserInfo) request.getSession().getAttribute("userInfo");
+    if(userInfo == null){
+      //从cookie 中读取信息
+      Cookie[] cookies = request.getCookies();
+      String username = null;
+      String password = null;
+
+      if (cookies != null && cookies.length > 0){
+        //获取 cookie值
+        for (Cookie c : cookies) {
+          if (c.getName().equals("username")) {
+            username = c.getValue();
+          }
+
+          if (c.getName().equals("password")) {
+            password = c.getValue();
+          }
+        }
+      }
 
 
-    if (userInfo ==null) {
-      userInfo = (UserInfo) request.getAttribute("userInfo");
+      if (username != null && password != null) {
+        if (userService.login(username, password)) { // 如果验证登录成功放行
+          //将查询到的信息传递
+          User user = userService.findUserInfoBy(username);
+          userInfo = new UserInfo(username,user.getUid());
+          request.setAttribute("userInfo",userInfo);
+          request.getSession().setAttribute("userInfo",userInfo);
+        }
+      }
+
     }
+
 
 
      restfulResponse.writeOnce(userInfo);

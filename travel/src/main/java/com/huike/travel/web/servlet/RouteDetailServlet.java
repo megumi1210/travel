@@ -16,7 +16,7 @@ import com.huike.travel.util.WebUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -57,7 +57,8 @@ public class RouteDetailServlet extends HttpServlet {
     UserInfo userInfo = (UserInfo) request.getSession().getAttribute("userInfo");
     if(userInfo == null) userInfo = (UserInfo) request.getAttribute("userInfo");
 
-    uid = userInfo.getUid();
+    if(userInfo!=null)
+      uid = userInfo.getUid();
 
     if (rid == -1) {
       restfulResponse.writeOnce(null);

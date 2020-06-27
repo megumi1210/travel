@@ -40,6 +40,7 @@ public class RouteServlet extends HttpServlet {
     String pageSize = request.getParameter("pageSize");
     String start = request.getParameter("start");
     String end = request.getParameter("end");
+    String order = request.getParameter("order");
 
 
     Route route = new Route();
@@ -69,9 +70,15 @@ public class RouteServlet extends HttpServlet {
     if(pageSize!=null){
       pageParam.setPageSize(Integer.parseInt(pageSize));
     }
-    pageParam.setUseOrderBy(true);
-    pageParam.setOrderByName("count");
-    pageParam.setOrder(Order.DESC);
+
+
+    //设置排序方式
+    if(order != null && !order.equals("")){
+      pageParam.setUseOrderBy(true);
+      pageParam.setOrderByName(order);
+      pageParam.setOrder(Order.DESC);
+    }
+
     PageInfo<Route> pageInfo = routeService.findRoutByPage(route, priceParam, pageParam);
 
 

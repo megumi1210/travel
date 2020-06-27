@@ -54,7 +54,6 @@ public class FavoriteServlet extends HttpServlet {
                  e.printStackTrace();
               }
           }
-          System.out.println(result);
           restfulResponse.writeOnce(result);
     }
 }
