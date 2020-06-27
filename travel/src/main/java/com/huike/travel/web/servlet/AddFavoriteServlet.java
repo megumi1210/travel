@@ -33,7 +33,9 @@ public class AddFavoriteServlet extends HttpServlet {
 
         String rid =request.getParameter("rid");
         UserInfo userInfo = (UserInfo) request.getAttribute("userInfo");
+        if(userInfo == null) userInfo = (UserInfo) request.getSession().getAttribute("userInfo");
         ResultInfo resultInfo = null;
+
 
         if(userInfo != null){
             uid = userInfo.getUid();

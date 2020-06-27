@@ -1,8 +1,7 @@
 package com.huike.travel.web.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.huike.travel.domain.LoginMessage;
-import com.huike.travel.domain.RestfulResponse;
+import com.huike.travel.domain.*;
 import com.huike.travel.service.UserService;
 import com.huike.travel.service.impl.UserServiceImpl;
 import com.huike.travel.util.WebUtils;
@@ -38,10 +37,29 @@ public class LoginServlet extends HttpServlet {
       boolean flag = userService.login(username, password);
       msg =
           flag
-              ? new LoginMessage("登录成功", Boolean.TRUE)
-              : new LoginMessage("用户名或密码错误", Boolean.FALSE);
+              ? new LoginMessage("登录成功", Boolean.TRUE, Status.SUCCESS.getCode())
+              : new LoginMessage("用户名或密码错误", Boolean.FALSE,Status.VALID_WRONG.getCode());
 
-      if (flag) {
+      boolean active = true;
+      User user = userService.findUserInfoBy(username);
+      assert  user != null;
+      //拦截未激活用户
+      if(flag){
+        String status = user.getStatus();
+
+        active = status.equals("Y");
+        if(!active){
+           msg = new LoginMessage("账号未激活",Boolean.FALSE,Status.NOT_ACTIVE.getCode());
+        }
+      }
+
+
+      if (flag && active) {
+
+        UserInfo userInfo = new UserInfo(username,user.getUid());
+        HttpSession session = request.getSession();
+        session.setAttribute("userInfo",userInfo);
+
         Cookie cookie1;
         Cookie cookie2;
         if (autoLogin != null) { // 记住密码
@@ -59,13 +77,11 @@ public class LoginServlet extends HttpServlet {
           response.addCookie(cookie1);
           response.addCookie(cookie2);
         }
-//          HttpSession session = request.getSession();
-//          session.setAttribute("username",username);
-//          session.setAttribute("password",username);
+
 
       }
     } else {
-      msg = new LoginMessage("验证码错误", Boolean.FALSE);
+      msg = new LoginMessage("验证码错误", Boolean.FALSE,Status.ERROR.getCode());
     }
 
      restfulResponse.writeOnce(msg);

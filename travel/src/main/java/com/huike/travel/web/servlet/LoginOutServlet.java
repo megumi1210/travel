@@ -15,6 +15,15 @@ public class LoginOutServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        if(request.getAttribute("userInfo") != null){
+            request.removeAttribute("userInfo");
+        }
+
+        if(request.getSession().getAttribute("userInfo") !=null){
+            request.getSession().removeAttribute("userInfo");
+        }
+
         Cookie cookie1;
         Cookie cookie2;
 

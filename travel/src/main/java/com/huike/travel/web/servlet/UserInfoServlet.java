@@ -33,29 +33,13 @@ public class UserInfoServlet extends HttpServlet {
     RestfulResponse restfulResponse = WebUtils.getRestfulResponse(response);
 
 
-    Cookie[] cookie = request.getCookies();
-    String username = null;
-    String password = null;
-    UserInfo userInfo = null;
+    UserInfo userInfo = (UserInfo) request.getSession().getAttribute("userInfo");
 
-    if (cookie != null && cookie.length > 0) {
 
-      for (Cookie c : cookie) {
-        if (c.getName().equals("username")) {
-          username = c.getValue();
-        }
-
-        if (c.getName().equals("password")) {
-          password = c.getValue();
-        }
-      }
+    if (userInfo ==null) {
+      userInfo = (UserInfo) request.getAttribute("userInfo");
     }
 
-    if (username != null && password != null) {
-      User user = userService.findUserInfoBy(username);
-      assert user != null;
-      userInfo = new UserInfo(username, user.getUid());
-    }
 
      restfulResponse.writeOnce(userInfo);
   }

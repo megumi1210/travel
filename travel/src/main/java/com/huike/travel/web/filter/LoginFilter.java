@@ -42,7 +42,14 @@ public class LoginFilter implements Filter {
         chain.doFilter(request, response);
         return;
     }
-      System.out.println("开始拦截登录...");
+
+    System.out.println("开始拦截登录...");
+
+    UserInfo userInfo = (UserInfo) request.getSession().getAttribute("userInfo");
+    if(userInfo !=null){
+      chain.doFilter(request, response);
+      return;
+    }
 
     Cookie[] cookies = request.getCookies();
     String username = null;
@@ -69,8 +76,9 @@ public class LoginFilter implements Filter {
       if (userService.login(username, password)) { // 如果验证登录成功放行
         //将查询到的信息传递
         User user = userService.findUserInfoBy(username);
-        UserInfo userInfo = new UserInfo(username,user.getUid());
+         userInfo = new UserInfo(username,user.getUid());
         request.setAttribute("userInfo",userInfo);
+
 
         chain.doFilter(request, response);
       } else {

@@ -45,10 +45,16 @@
                         success: function (loginMessage) {
                             if (loginMessage.result) {
                                 alert(loginMessage.message);
-                                window.location.href = "http://localhost:9090/travel";
+                                window.location.href = "index.html";
                             } else {
-                                $('#errorMsg').html(loginMessage.message).show();
-                                $('#checkCode').prop("src", "checkCode?" + new Date().getTime());
+                                if(loginMessage.status===3){
+                                    alert("请先激活邮箱");
+                                    window.location.href= "register_ok.html?username="+$('#username').val();
+                                }else {
+                                    $('#errorMsg').html(loginMessage.message).show();
+                                    $('#checkCode').prop("src", "checkCode?" + new Date().getTime());
+                                }
+
 
                             }
 
