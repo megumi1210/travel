@@ -9,6 +9,7 @@ import com.huike.travel.service.impl.FavoriteServiceImpl;
 import com.huike.travel.service.impl.RouteServiceImpl;
 import com.huike.travel.service.impl.UserServiceImpl;
 import com.huike.travel.util.WebUtils;
+import jdk.internal.module.ModuleLoaderMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -62,7 +63,7 @@ public class AddFavoriteServlet extends HttpServlet {
                 e.printStackTrace();
             }
 
-            //未登录 null 一直显示添加收藏
+      // 未登录 null 一直显示添加收藏
             restfulResponse.writeOnce(resultInfo);
 
         }

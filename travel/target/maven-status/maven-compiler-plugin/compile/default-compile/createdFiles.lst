@@ -1,5 +1,6 @@
 com\huike\travel\web\servlet\UserInfoServlet.class
 com\huike\travel\web\filter\LoginFilter.class
+com\huike\travel\domain\Status.class
 com\huike\travel\web\servlet\FavoriteServlet.class
 com\huike\travel\web\servlet\LoginOutServlet.class
 com\huike\travel\domain\UserInfo.class

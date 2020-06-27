@@ -27,7 +27,6 @@ public class LoginFilter implements Filter {
     HttpServletResponse response = (HttpServletResponse) resp;
 
     String path = request.getRequestURI();
-
     boolean release = true;
 
     for (String s : intercept_path) { // 判断是否有拦截的路径
@@ -36,7 +35,6 @@ public class LoginFilter implements Filter {
         break;
       }
     }
-
 
     if (release) {
         chain.doFilter(request, response);
@@ -79,9 +77,8 @@ public class LoginFilter implements Filter {
          userInfo = new UserInfo(username,user.getUid());
         request.setAttribute("userInfo",userInfo);
 
-
         chain.doFilter(request, response);
-      } else {
+      } else {//用户名密码错误
         response.sendRedirect("toLogin");
       }
     } else { // 登录校验失败
