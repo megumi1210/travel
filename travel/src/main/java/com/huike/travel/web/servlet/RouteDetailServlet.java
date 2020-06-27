@@ -44,8 +44,6 @@ public class RouteDetailServlet extends HttpServlet {
     RestfulResponse restfulResponse = WebUtils.getRestfulResponse(response);
     int uid = -1;
     int rid = -1;
-    String username = null;
-    String password = null;
     RouteDetailResult result = null;
 
     try {
@@ -55,27 +53,11 @@ public class RouteDetailServlet extends HttpServlet {
       e.printStackTrace();
     }
 
-    Cookie[] cookies = request.getCookies();
-    if (cookies != null && cookies.length > 0) {
-      for (Cookie c : cookies) {
-        if (c.getName().equals("username")) {
-          username = c.getValue();
-        }
 
-        if (c.getName().equals("password")) {
-          password = c.getValue();
-        }
-      }
-    }
+    UserInfo userInfo = (UserInfo) request.getSession().getAttribute("userInfo");
+    if(userInfo == null) userInfo = (UserInfo) request.getAttribute("userInfo");
 
-    if (username != null && password != null) {
-      if (userService.login(username, password)) { // 如果验证登录成功放行
-        // 将查询到的信息传递
-        User user = userService.findUserInfoBy(username);
-        uid = user.getUid();
-      }
-    }
-
+    uid = userInfo.getUid();
 
     if (rid == -1) {
       restfulResponse.writeOnce(null);

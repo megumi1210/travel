@@ -76,10 +76,14 @@
                              success:function (resultInfo) {
                                  if(resultInfo){
 
+                                     if(resultInfo.active === undefined){
+                                         //异步拦截出现问题
+                                         alert("请先登录");
+                                         window.location.href="login.html";
+                                     }
                                      vue.active =resultInfo.active;
-                                     //异步拦截出现问题
-                                     alert("请先登录");
-                                     window.location.href="login.html";
+
+
 
                                      if(vue.route){
                                         vue.route.count=resultInfo.count;
