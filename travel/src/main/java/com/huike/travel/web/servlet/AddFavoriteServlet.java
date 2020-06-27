@@ -9,16 +9,16 @@ import com.huike.travel.service.impl.FavoriteServiceImpl;
 import com.huike.travel.service.impl.RouteServiceImpl;
 import com.huike.travel.service.impl.UserServiceImpl;
 import com.huike.travel.util.WebUtils;
-import jdk.internal.module.ModuleLoaderMap;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
+
 
 @WebServlet("/addFavorite")
 public class AddFavoriteServlet extends HttpServlet {

@@ -33,4 +33,26 @@ public class RestfulResponse {
         out.flush();
         out.close();
     }
+
+    public void  writeStringOnce(String s){
+        out.write(s);
+        out.flush();
+        out.close();
+    }
+
+    public ObjectMapper getMapper() {
+        return mapper;
+    }
+
+    public void setMapper(ObjectMapper mapper) {
+        this.mapper = mapper;
+    }
+
+    public PrintWriter getOut() {
+        return out;
+    }
+
+    public void setOut(PrintWriter out) {
+        this.out = out;
+    }
 }
